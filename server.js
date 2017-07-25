@@ -27,7 +27,7 @@ app.use(express.static('public'));
 app.get("/api", function (req, res) {
   if(req.query.imageSearch){
     var q = req.query.imageSearch;
-    var url = 'https://www.google.com/search?q=' + q + '&tbm=isch';
+    var url = 'https://www.google.com/search?q='+q;
     res.writeHead(200, {"content-type" : "text/plain"});
     parseIt(url, function(err, data){
       if(err) res.end(err);
