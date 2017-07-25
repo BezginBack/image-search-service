@@ -27,7 +27,7 @@ app.use(express.static('public'));
 app.get("/api", function (req, res) {
   if(req.query.imageSearch){
     var q = req.query.imageSearch;
-    var url = 'https://www.google.com/search?q='+q;
+    var url = 'https://www.google.com/search?q=funny+cats&source=lnms&tbm=isch&sa=X';
     res.writeHead(200, {"content-type" : "text/plain"});
     parseIt(url, function(err, data){
       if(err) res.end(err);
