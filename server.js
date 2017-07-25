@@ -5,14 +5,15 @@ var async = require("async");
 var cheerio = require("cheerio");
 
 function parseIt(url, callback){
-  var data = "";
   var arr = [];
   request(url, function (err, page, body) {
     if (!err && page.statusCode == 200) {
       var obj = JSON.parse(body);
-      var data = "";
+      var data = {
+        items : []
+      };
       for (var i = 0; i < obj.items.length; i++){
-        data += obj.items[i].pagemap;
+        data += obj.items[i].pagemap.imageobject[0].url;
       } 
       callback(null, data);
     } else {
