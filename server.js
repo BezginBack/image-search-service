@@ -9,14 +9,10 @@ function parseIt(url, callback){
   var arr = [];
   request(url, function (err, page, body) {
     if (!err && page.statusCode == 200) {
-      var $ = cheerio.load(body);
       var data = "";
-      for(var j = 0 ; j < $("div").get().length; j++){
-        data += $("div").eq(j).text();
-      }
       callback(null, body);
     } else {
-      callback(null, "err");
+      callback(page.statusCode, null);
     }
   });
 }
@@ -27,11 +23,10 @@ app.use(express.static('public'));
 app.get("/api", function (req, res) {
   if(req.query.imageSearch){
     var q = req.query.imageSearch;
-    var url = 'https://www.google.com/search?q=funny+cats&source=lnms&tbm=isch&sa=X';
+    var url = 'https://www.googleapis.com/customsearch/v1?cx='+ process.env.ID + '&key=' + process.env.KEY + '&q=' + q;
     res.writeHead(200, {"content-type" : "text/plain"});
     parseIt(url, function(err, data){
-      if(err) res.end(err);
-      if(data == "err") res.end("error or bad search");
+      if(err) res.end("err " + err);
       //res.write(data);
       res.end(data);
     });
