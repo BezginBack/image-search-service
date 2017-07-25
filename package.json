@@ -10,8 +10,6 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "async": "^2.5.0",
-    "cheerio": "^1.0.0-rc.2",
     "express": "^4.15.3",
     "request": "^2.81.0"
   },

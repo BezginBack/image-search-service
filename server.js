@@ -10,10 +10,14 @@ function parseIt(url, callback){
     if (!err && page.statusCode == 200) {
       var obj = JSON.parse(body);
       var data = {
-        items : []
+        item : []
       };
       for (var i = 0; i < obj.items.length; i++){
-        data += obj.items[i].pagemap.imageobject[0].url;
+        data.item.push({
+          url : obj.items[i].pagemap.imageobject[0].url,
+          snippet : obj.items[i].snippet,
+          link : obj.items[i].link
+        });
       } 
       callback(null, data);
     } else {
@@ -32,7 +36,7 @@ app.get("/api", function (req, res) {
     parseIt(url, function(err, data){
       if(err) res.end("err " + err);
       //res.write(data);
-      res.end(data);
+      res.end(JSON.stringify(data));
     });
   }
 });
