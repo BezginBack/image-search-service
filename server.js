@@ -10,13 +10,15 @@ function parseIt(url, callback){
   request(url, function (err, page, body) {
     if (!err && page.statusCode == 200) {
       var data = "";
+      for (var p in body){
+        data += 
+      } 
       callback(null, body);
     } else {
-      callback(page.statusCode, null);
+      callback(err + ' ' + page.statusCode, null);
     }
   });
 }
-
 
 app.use(express.static('public'));
 
