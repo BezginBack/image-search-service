@@ -1,39 +1,42 @@
-// server.js
-// where your node app starts
-
-// init project
-var express = require('express');
+var express = require("express");
 var app = express();
+var request = require("request");
+var async = require("async");
+var cheerio = require("cheerio");
 
-// we've started you off with Express, 
-// but feel free to use whatever libs or frameworks you'd like through `package.json`.
+function parseIt(url, callback){
+  var data = "";
+  var arr = [];
+  request(url, function (err, page, body) {
+    if (!err && page.statusCode == 200) {
+      var $ = cheerio.load(body);
+      var html = $(".rg_meta").html();
+      callback(null, html);
+    } else {
+      callback(null, "err");
+    }
+  });
+}
 
-// http://expressjs.com/en/starter/static-files.html
+
 app.use(express.static('public'));
 
-// http://expressjs.com/en/starter/basic-routing.html
-app.get("/", function (request, response) {
-  response.sendFile(__dirname + '/views/index.html');
+app.get("/api", function (req, res) {
+  if(req.query.imageSearch){
+    var q = req.query.imageSearch;
+    var url = 'https://www.google.com.tr/search?q=' + q + '&tbm=isch';
+    res.writeHead(200, {"content-type" : "text/html"});
+    parseIt(url, function(err, data){
+      if(err) res.end(err);
+      if(data == "err") res.end("error or bad search");
+      res.write(data);
+      if(data[data.length-7] == ".") res.end();
+    });
+  } else {
+    res.sendFile(__dirname + '/views/index.html');
+  }
 });
 
-app.get("/dreams", function (request, response) {
-  response.send(dreams);
-});
-
-// could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
-app.post("/dreams", function (request, response) {
-  dreams.push(request.query.dream);
-  response.sendStatus(200);
-});
-
-// Simple in-memory store for now
-var dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
-
-// listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
