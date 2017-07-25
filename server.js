@@ -11,8 +11,8 @@ function parseIt(url, callback){
     if (!err && page.statusCode == 200) {
       var $ = cheerio.load(body);
       var data = "";
-      for(var j = 0 ; j < $(".notrans").get().length; j++){
-        data += $(".rg_meta").eq(j).text();
+      for(var j = 0 ; j < $("div").get().length; j++){
+        data += $("div").eq(j).text();
       }
       callback(null, data);
     } else {
