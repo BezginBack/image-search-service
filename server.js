@@ -9,11 +9,12 @@ function parseIt(url, callback){
   var arr = [];
   request(url, function (err, page, body) {
     if (!err && page.statusCode == 200) {
+      var obj = JSON.parse(body);
       var data = "";
-      for (var p in body){
-        data += body[p] + " - ";
+      for (var i = 0; i < obj.items.length; i++){
+        data += obj.items[i].pagemap;
       } 
-      callback(null, JSON.getJson(body));
+      callback(null, data);
     } else {
       callback(err + ' ' + page.statusCode, null);
     }
