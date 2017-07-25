@@ -11,9 +11,9 @@ function parseIt(url, callback){
     if (!err && page.statusCode == 200) {
       var data = "";
       for (var p in body){
-        data += 
+        data += body[p] + " - ";
       } 
-      callback(null, body);
+      callback(null, JSON.getJson(body));
     } else {
       callback(err + ' ' + page.statusCode, null);
     }
