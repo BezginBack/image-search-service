@@ -1,8 +1,6 @@
 var express = require("express");
 var app = express();
 var request = require("request");
-var async = require("async");
-var cheerio = require("cheerio");
 
 function parseIt(url, callback){
   var arr = [];
@@ -35,14 +33,11 @@ app.get("/api", function (req, res) {
     res.writeHead(200, {"content-type" : "text/plain"});
     parseIt(url, function(err, data){
       if(err) res.end("err " + err);
-      //res.write(data);
       res.end(JSON.stringify(data));
     });
+  } else {
+    res.sendFile(__dirname + '/views/index.html');  
   }
-});
-
-app.get("/api", function (req, res) {
-  res.sendFile(__dirname + '/views/index.html');
 });
 
 app.get("/", function (req, res) {
