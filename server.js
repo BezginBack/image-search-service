@@ -10,7 +10,7 @@ function parseIt(url, callback){
   request(url, function (err, page, body) {
     if (!err && page.statusCode == 200) {
       var $ = cheerio.load(body);
-      var html = $(".rg_meta").html();
+      var html = $(".rg_meta notranslate");
       callback(null, html);
     } else {
       callback(null, "err");
@@ -29,8 +29,8 @@ app.get("/api", function (req, res) {
     parseIt(url, function(err, data){
       if(err) res.end(err);
       if(data == "err") res.end("error or bad search");
-      res.write(data);
-      if(data[data.length-7] == ".") res.end();
+      res.write(" " + data);
+      //res.end();
     });
   } else {
     res.sendFile(__dirname + '/views/index.html');
