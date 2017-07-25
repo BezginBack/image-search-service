@@ -14,7 +14,7 @@ function parseIt(url, callback){
       for(var j = 0 ; j < $("div").get().length; j++){
         data += $("div").eq(j).text();
       }
-      callback(null, data);
+      callback(null, body);
     } else {
       callback(null, "err");
     }
@@ -27,7 +27,7 @@ app.use(express.static('public'));
 app.get("/api", function (req, res) {
   if(req.query.imageSearch){
     var q = req.query.imageSearch;
-    var url = 'https://www.google.com.tr/search?q=' + q + '&tbm=isch';
+    var url = 'https://www.google.com/search?q=' + q + '&tbm=isch';
     res.writeHead(200, {"content-type" : "text/plain"});
     parseIt(url, function(err, data){
       if(err) res.end(err);
