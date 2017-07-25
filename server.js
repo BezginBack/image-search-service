@@ -10,7 +10,7 @@ function parseIt(url, callback){
   request(url, function (err, page, body) {
     if (!err && page.statusCode == 200) {
       var $ = cheerio.load(body);
-      var html = $(".rg_meta notranslate");
+      var html = $(".rg_meta").text();
       callback(null, html);
     } else {
       callback(null, "err");
@@ -25,16 +25,22 @@ app.get("/api", function (req, res) {
   if(req.query.imageSearch){
     var q = req.query.imageSearch;
     var url = 'https://www.google.com.tr/search?q=' + q + '&tbm=isch';
-    res.writeHead(200, {"content-type" : "text/html"});
+    res.writeHead(200, {"content-type" : "text/plain"});
     parseIt(url, function(err, data){
       if(err) res.end(err);
       if(data == "err") res.end("error or bad search");
-      res.write(" " + data);
-      //res.end();
+      res.write(JSON.stringify(data));
+      res.end();
     });
-  } else {
-    res.sendFile(__dirname + '/views/index.html');
   }
+});
+
+app.get("/api", function (req, res) {
+  res.sendFile(__dirname + '/views/index.html');
+});
+
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + '/views/index.html');
 });
 
 var listener = app.listen(process.env.PORT, function () {
