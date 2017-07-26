@@ -34,10 +34,15 @@ function getIt(url, callback){
   request(url, function (err, page, body) {
     if (!err && page.statusCode == 200) {
       var obj = JSON.parse(body);
-        url : obj.items[i].pagemap.imageobject[0].url,
-        snippet : obj.items[i].snippet,
-        link : obj.items[i].link,
-        time: d.getDate() + "." + (m + 1) + "." + d.getFullYear() + ", " + d.getHours() + ":" + d.getMinutes()
+      var d = new Date();
+      var m = parseInt(d.getMonth());
+      var data = {
+        term : obj.queries.request[0].searchTerms,
+        time : d.getDate() + "." + (m + 1) + "." + d.getFullYear() + ", " + d.getHours() + ":" + d.getMinutes()
+      };
+      callback(null, data);
+    } else {
+      callback(err + ' ' + page.statusCode, null);
     }
   });
 }
