@@ -1,6 +1,7 @@
 var express = require("express");
 var app = express();
 var request = require("request");
+var fs = require("fs");
 
 function parseIt(url, l, callback){
   request(url, function (err, page, body) {
@@ -31,6 +32,27 @@ function parseIt(url, l, callback){
     }
   });
 }
+
+app.get("/whoami", function (req, res) {
+  var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  ip = ip.split(",")[0];
+  var language = req.headers['accept-language'].split(",")[0];
+  var browser = req.headers['user-agent']
+  var d = new Date();
+  var m = parseInt(d.getMonth());
+  var json = JSON.stringify({
+            ip: ip,
+            lang: language,
+            browser: browser,
+            time: d.getDate() + "." + (m + 1) + "." + d.getFullYear() + ", " + d.getHours() + ":" + d.getMinutes()
+        });
+  var filePath = __dirname + '/log.txt';
+  fs.appendFile(filePath, json + "\n", function(err){
+    if (err) res.end(err);
+    res.writeHead(200, {"content-type" : "text/plain"});
+    res.end(json);
+  });
+});
 
 app.use(express.static('public'));
 
