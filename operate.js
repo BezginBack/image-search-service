@@ -1,9 +1,10 @@
 var mongodb = require("mongodb");
 var MongoClient = mongodb.MongoClient;
+var uri = process.env.MONGOLAB_URI;
 
-function insert(url, item, callback) {
+function insert(item, callback) {
   var collection; 
-  MongoClient.connect(url, function(err, db) {
+  MongoClient.connect(uri, function(err, db) {
     if (err) {
       callback(err, null);
     } else {
@@ -17,7 +18,7 @@ function insert(url, item, callback) {
   });
 }
 
-function exist(url, callback) {
+function bring(url, callback) {
   var collection;
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -57,5 +58,5 @@ function where(url, key, callback) {
 }
 
 module.exports.insert = insert;
-module.exports.exist = exist;
+module.exports.bring = bring;
 module.exports.where = where;

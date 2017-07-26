@@ -2,7 +2,6 @@ var express = require("express");
 var app = express();
 var op = require("./operate.js");
 var re = require("./request.js");
-var con = process.env.MONGOLAB_URI;
 
 app.use(express.static('public'));
 
@@ -15,10 +14,10 @@ app.get("/api", function (req, res) {
     var q = req.query.imageSearch;
     var url = 'https://www.googleapis.com/customsearch/v1?cx='+ process.env.ID + '&key=' + process.env.KEY + '&q=' + q;
     res.writeHead(200, {"content-type" : "text/plain"});
-    re.getIt(url, function(err, data){
+    re.getIt(url, function(err, item){
       if(err) res.end("err " + err);
-      op.insert(con, data, function(){
-        
+      op.insert(item, function(err, res){
+        if (err) res.end(err);  
       });
     });
     re.parseIt(url, limit, function(err, data){
