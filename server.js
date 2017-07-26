@@ -30,9 +30,15 @@ app.get("/api", function (req, res) {
 });
 
 app.get("/api/latest/imagesearch", function (req, res) {
-  op.bring(function(err, item){
+  op.bring(function(err, arr){
     if(err) res.end(err);
-    res.end(" " + item);
+    for(var i = 0; i < arr.length; i++){
+      res.json({
+        term : arr[i].term,
+        time : arr[i].time
+      });
+    }
+    res.end();
   });
 });
 

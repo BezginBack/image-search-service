@@ -25,13 +25,9 @@ function bring(callback) {
       callback(err, null);
     } else {
       collection = db.collection('search_storage');
-      collection.find().limit(10).next(function(err, obj){
+      collection.find().limit(10).toArray(function(err, arr){
         if(err) callback(err, null);
-        //callback(null, JSON.stringify({
-          //term : obj.term,
-          //time : obj.time
-        //}));
-        callback(null, obj.length);
+        callback(null, arr);
       });
       db.close();
     }
