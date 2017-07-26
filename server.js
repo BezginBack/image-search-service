@@ -33,10 +33,10 @@ app.get("/api/latest/imagesearch", function (req, res) {
   op.bring(function(err, arr){
     if(err) res.end(err);
     for(var i = 0; i < arr.length; i++){
-      res.json({
+      res.write(JSON.stringify({
         term : arr[i].term,
         time : arr[i].time
-      });
+      }));
     }
     res.end();
   });
