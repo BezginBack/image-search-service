@@ -29,6 +29,13 @@ app.get("/api", function (req, res) {
   }
 });
 
+app.get("/api/latest/imagesearch", function (req, res) {
+  op.bring(function(err, item){
+    if(err) res.end(err);
+    res.end(" " + item);
+  });
+});
+
 app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });

@@ -18,19 +18,20 @@ function insert(item, callback) {
   });
 }
 
-function bring(url, callback) {
+function bring(callback) {
   var collection;
-  MongoClient.connect(url, function(err, db) {
+  MongoClient.connect(uri, function(err, db) {
     if (err) {
-      callback(null, "err1");
+      callback(err, null);
     } else {
-      collection = db.collection('url_storage');
-      collection.find().sort({$natural:-1}).limit(1).next(function(err, obj){
-        if(err) callback(null, "err3");
-        callback(null, JSON.stringify({
-          oldUrl : obj.url,
-          newUrl : "https://url-sh-srv.glitch.me/" + obj.number
-        }));  
+      collection = db.collection('search_storage');
+      collection.find().limit(10).next(function(err, obj){
+        if(err) callback(err, null);
+        //callback(null, JSON.stringify({
+          //term : obj.term,
+          //time : obj.time
+        //}));
+        callback(null, obj.length);
       });
       db.close();
     }
