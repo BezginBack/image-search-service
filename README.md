@@ -10,7 +10,11 @@ You can get a list of the most recently submitted search strings.
 Example Search
 ------------
 
+https://img-search-service.glitch.me/api?imageSearch=yourkeywords&offset=yourlimit(max10)
 
+or
+
+https://img-search-service.glitch.me/api/latest/imagesearch
 
 Used Modules
 ------------
